@@ -10,6 +10,11 @@ struct Task
     int priority;
     string name;
 };
+struct path
+{
+    int val;
+    string path;
+};
 
 struct Cmp
 {
@@ -39,6 +44,16 @@ int h1(string start, string goal)
     return h;
 }
 
+int searchzero(string s)
+{
+    for (int i = 0; i < (int)s.length(); i++)
+    {
+        if (s[i] == '0')
+            return i;
+    }
+    return -1;
+}
+
 void greddy_search(string start, string goal)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
@@ -57,7 +72,22 @@ void greddy_search(string start, string goal)
             cout<<"founded";
             /// will complete later;
         }
-        
+        queue<path> actions;
+
+        int index = searchzero(expanded);
+        int row = index / 3;
+        int col = index % 3;
+
+        if (row > 0)
+            actions.push({index - 3, "down"});
+        if (row < 2)
+            actions.push({index + 3, "up"});
+        if (col > 0)
+            actions.push({index - 1, "right"});
+        if (col < 2)
+            actions.push({index + 1, "left"});
+
+
 
 
     }
