@@ -55,13 +55,13 @@ int h2(string start, string goal)
             continue;
         }
 
-      int index  = searchindex(start,start[i]);
+      int index  = i;
       int row = index / 3;
       int col = index % 3;
       /////////////////
       int index2  = searchindex(goal,start[i]);
-      int row2 = index / 3;
-      int col2 = index % 3;
+      int row2 = index2 / 3;
+      int col2 = index2 % 3;
       if(row != row2){
         h++;
       }
@@ -70,6 +70,7 @@ int h2(string start, string goal)
       }
    
     }
+    return h;
     
 }
 
