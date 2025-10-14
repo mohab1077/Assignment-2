@@ -53,6 +53,11 @@ int searchzero(string s)
     }
     return -1;
 }
+string swapstr(string a, int idx, int action)
+{
+    swap(a[idx], a[action]);
+    return a;
+}
 
 void greddy_search(string start, string goal)
 {
@@ -86,6 +91,12 @@ void greddy_search(string start, string goal)
             actions.push({index - 1, "right"});
         if (col < 2)
             actions.push({index + 1, "left"});
+
+        while (!actions.empty()){
+            string newbuzz = swapstr(expanded, index, actions.front().val);
+            string mv = actions.front().path;
+            actions.pop();
+        }
 
 
 
