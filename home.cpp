@@ -49,32 +49,33 @@ int h1(string start, string goal)
 int h2(string start, string goal)
 {
     int h = 0;
-    for(int i = 0; i <= 8; i++){
-      if (start[i] == '0')
+    for (int i = 0; i <= 8; i++)
+    {
+        if (start[i] == '0')
         {
             continue;
         }
 
-      int index  = i;
-      int row = index / 3;
-      int col = index % 3;
-      /////////////////
-      int index2  = searchindex(goal,start[i]);
-      int row2 = index2 / 3;
-      int col2 = index2 % 3;
-      if(row != row2){
-        h++;
-      }
-      if(col != col2){
-        h++;
-      }
-   
+        int index = i;
+        int row = index / 3;
+        int col = index % 3;
+        /////////////////
+        int index2 = searchindex(goal, start[i]);
+        int row2 = index2 / 3;
+        int col2 = index2 % 3;
+        if (row != row2)
+        {
+            h++;
+        }
+        if (col != col2)
+        {
+            h++;
+        }
     }
     return h;
-    
 }
 
-int searchindex(string s,char find)
+int searchindex(string s, char find)
 {
     for (int i = 0; i < (int)s.length(); i++)
     {
@@ -98,11 +99,19 @@ string swapstr(string a, int idx, int action)
     return a;
 }
 
-void greddy_search(string start, string goal)
+void greddy_search(string start, string goal, int main_h)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
     unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
-    int h = h1(start, goal);
+    int h;
+    if (main_h == 1)
+    {
+        h = h1(start, goal);
+    }
+    if (main_h == 2)
+    {
+        h = h2(start, goal);
+    }
     frontire.push({h, start});
     checkfrontire_exp.insert(start);
     while (true)
@@ -145,7 +154,15 @@ void greddy_search(string start, string goal)
             {
                 continue;
             }
-            int h = h1(newbuzz, goal);
+            int h;
+            if (main_h == 1)
+            {
+                h = h1(start, goal);
+            }
+            if (main_h == 2)
+            {
+                h = h2(start, goal);
+            }
             frontire.push({h, newbuzz});
             checkfrontire_exp.insert(newbuzz);
         }
