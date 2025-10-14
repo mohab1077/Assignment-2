@@ -46,6 +46,42 @@ int h1(string start, string goal)
     return h;
 }
 
+int h2(string start, string goal)
+{
+    int h = 0;
+    for(int i = 0; i <= 8; i++){
+      if (start[i] == '0')
+        {
+            continue;
+        }
+
+      int index  = searchindex(start,start[i]);
+      int row = index / 3;
+      int col = index % 3;
+      /////////////////
+      int index2  = searchindex(goal,start[i]);
+      int row2 = index / 3;
+      int col2 = index % 3;
+      if(row != row2){
+        h++;
+      }
+      if(col != col2){
+        h++;
+      }
+   
+    }
+    
+}
+
+int searchindex(string s,char find)
+{
+    for (int i = 0; i < (int)s.length(); i++)
+    {
+        if (s[i] == find)
+            return i;
+    }
+    return -1;
+}
 int searchzero(string s)
 {
     for (int i = 0; i < (int)s.length(); i++)
