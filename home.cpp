@@ -36,10 +36,16 @@ int h1(string start, string goal)
             h++;
         }
     }
+    return h;
 }
 
-void greddy_search()
+void greddy_search(string start, string goal)
 {
+    priority_queue<Task, vector<Task>, Cmp> frontire;
+    int h = h1(start,goal);
+    frontire.push({h,start});
+    
+
 }
 
 int main()
