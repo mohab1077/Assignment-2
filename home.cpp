@@ -169,11 +169,19 @@ void greddy_search(string start, string goal, int main_h)
     }
 }
 
-void a_star(string start, string goal)
+void a_star(string start, string goal, int main_h)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
     unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
-    int h = h1(start, goal);
+    int h;
+    if (main_h == 1)
+    {
+        h = h1(start, goal);
+    }
+    if (main_h == 2)
+    {
+        h = h2(start, goal);
+    }
     frontire.push({h, start, 0});
     checkfrontire_exp.insert(start);
     while (true)
@@ -217,7 +225,15 @@ void a_star(string start, string goal)
             {
                 continue;
             }
-            int h = h1(newbuzz, goal);
+            int h;
+            if (main_h == 1)
+            {
+                h = h1(start, goal);
+            }
+            if (main_h == 2)
+            {
+                h = h2(start, goal);
+            }
             frontire.push({h + dep + 1, newbuzz, dep + 1});
             checkfrontire_exp.insert(newbuzz);
         }
