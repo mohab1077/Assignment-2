@@ -2,6 +2,7 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <unordered_set>
 
 using namespace std;
 // this is for priority queue
@@ -62,8 +63,10 @@ string swapstr(string a, int idx, int action)
 void greddy_search(string start, string goal)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
+    unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
     int h = h1(start,goal);
     frontire.push({h,start});
+    checkfrontire_exp.insert(start);
     while(true){
         if (frontire.empty())
         {
@@ -75,6 +78,7 @@ void greddy_search(string start, string goal)
         frontire.pop();
         if(expanded == goal){
             cout<<"founded";
+            break;
             /// will complete later;
         }
         queue<path> actions;
@@ -96,9 +100,13 @@ void greddy_search(string start, string goal)
             string newbuzz = swapstr(expanded, index, actions.front().val);
             string mv = actions.front().path;
             actions.pop();
+             if (checkfrontire_exp.find(newbuzz) != checkfrontire_exp.end()){
+                continue;
+             }
+            int h = h1(newbuzz,goal);
+            frontire.push({h,newbuzz});
+            checkfrontire_exp.insert(newbuzz);
         }
-
-
 
 
     }
