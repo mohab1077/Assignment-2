@@ -10,6 +10,7 @@ struct Task
 {
     int priority;
     string name;
+    int dep;
 };
 struct path
 {
@@ -64,10 +65,11 @@ void greddy_search(string start, string goal)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
     unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
-    int h = h1(start,goal);
-    frontire.push({h,start});
+    int h = h1(start, goal);
+    frontire.push({h, start});
     checkfrontire_exp.insert(start);
-    while(true){
+    while (true)
+    {
         if (frontire.empty())
         {
             cout << "Goal not found!\n";
@@ -76,8 +78,9 @@ void greddy_search(string start, string goal)
 
         string expanded = frontire.top().name;
         frontire.pop();
-        if(expanded == goal){
-            cout<<"founded";
+        if (expanded == goal)
+        {
+            cout << "founded";
             break;
             /// will complete later;
         }
@@ -96,24 +99,76 @@ void greddy_search(string start, string goal)
         if (col < 2)
             actions.push({index + 1, "left"});
 
-        while (!actions.empty()){
+        while (!actions.empty())
+        {
             string newbuzz = swapstr(expanded, index, actions.front().val);
             string mv = actions.front().path;
             actions.pop();
-             if (checkfrontire_exp.find(newbuzz) != checkfrontire_exp.end()){
+            if (checkfrontire_exp.find(newbuzz) != checkfrontire_exp.end())
+            {
                 continue;
-             }
-            int h = h1(newbuzz,goal);
-            frontire.push({h,newbuzz});
+            }
+            int h = h1(newbuzz, goal);
+            frontire.push({h, newbuzz});
             checkfrontire_exp.insert(newbuzz);
         }
-
-
     }
-
-
 }
 
+void a_star(string start, string goal)
+{
+    priority_queue<Task, vector<Task>, Cmp> frontire;
+    unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
+    int h = h1(start, goal);
+    frontire.push({h, start, 0});
+    checkfrontire_exp.insert(start);
+    while (true)
+    {
+        if (frontire.empty())
+        {
+            cout << "Goal not found!\n";
+            return;
+        }
+
+        string expanded = frontire.top().name;
+        int dep = frontire.top().dep;
+        frontire.pop();
+        if (expanded == goal)
+        {
+            cout << "founded";
+            break;
+            /// will complete later;
+        }
+        queue<path> actions;
+
+        int index = searchzero(expanded);
+        int row = index / 3;
+        int col = index % 3;
+
+        if (row > 0)
+            actions.push({index - 3, "down"});
+        if (row < 2)
+            actions.push({index + 3, "up"});
+        if (col > 0)
+            actions.push({index - 1, "right"});
+        if (col < 2)
+            actions.push({index + 1, "left"});
+
+        while (!actions.empty())
+        {
+            string newbuzz = swapstr(expanded, index, actions.front().val);
+            string mv = actions.front().path;
+            actions.pop();
+            if (checkfrontire_exp.find(newbuzz) != checkfrontire_exp.end())
+            {
+                continue;
+            }
+            int h = h1(newbuzz, goal);
+            frontire.push({h + dep + 1, newbuzz, dep + 1});
+            checkfrontire_exp.insert(newbuzz);
+        }
+    }
+}
 int main()
 {
 
