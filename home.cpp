@@ -44,7 +44,24 @@ void greddy_search(string start, string goal)
     priority_queue<Task, vector<Task>, Cmp> frontire;
     int h = h1(start,goal);
     frontire.push({h,start});
-    
+    while(true){
+        if (frontire.empty())
+        {
+            cout << "Goal not found!\n";
+            return;
+        }
+
+        string expanded = frontire.top().name;
+        frontire.pop();
+        if(expanded == goal){
+            cout<<"founded";
+            /// will complete later;
+        }
+        
+
+
+    }
+
 
 }
 
