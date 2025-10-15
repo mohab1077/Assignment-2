@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <algorithm>
+#include <regex>
 
 using namespace std;
 unordered_map<string, string> parent;
@@ -354,7 +355,66 @@ public:
 
 int main()
 {
-    TilePuzzle ob("724506831","012345678");
-    ob.greddy_search(1);
+    
+    while(true){
+    bool error = false;
+    string cleaned;
+    do
+    {
+        error = false;
+        string input;
+        cout << "input the start state : ";
+        getline(cin, input);
+        cleaned = regex_replace(input, regex("\\s+"), "");
+        if (cleaned.size() != 9 || !all_of(cleaned.begin(), cleaned.end(), ::isdigit))
+        {
+            cout << " Invalid input! You must enter exactly 9 digits." << endl;
+            error = true;
+        }
+    } while (error);
+    TilePuzzle ob(cleaned,"012345678");
+    while (true)
+    { 
+        int select = 0;
+        cout << "1- greedy search h1" << endl;
+        cout << "2- greedy search h2" << endl;
+        cout << "3- A* h1" << endl;
+        cout << "4- A* h2" << endl;
+        cout << "5- enter new initial state" << endl;
+        cout << "enter a number to select the algorthim : ";
+        cin >> select;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');// ignore after
+
+        if (select == 1)
+        {
+           ob.greddy_search(1);
+        }
+        else if (select == 2)
+        {
+            ob.greddy_search(2);
+        }
+        else if(select == 3){
+            ob.a_star(1);
+        }
+         else if(select == 4){
+            ob.a_star(2);
+        }
+        else if (select == 5)
+        {
+            break;
+        }
+
+        else
+        {
+            cout << endl;
+            cout << "wrong number to choose";
+        }
+        
+        //cout << " the algorthim took " << timee << " seconds" << endl;
+        // reset paths
+        parent.clear(); 
+        movee.clear();
+    }
+}
     return 0;
 }
