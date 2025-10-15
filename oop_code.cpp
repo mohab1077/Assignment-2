@@ -6,10 +6,13 @@
 #include <unordered_map>
 #include <algorithm>
 #include <regex>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 unordered_map<string, string> parent;
 unordered_map<string, string> movee;
+double timee;
 // this is for priority queue
 struct Task
 {
@@ -187,6 +190,7 @@ public:
 
     void greddy_search( int main_h)
     {
+        auto startt = high_resolution_clock::now();
         priority_queue<Task, vector<Task>, Cmp> frontire;
         unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
         int nodes_frontire = 0;
@@ -218,6 +222,9 @@ public:
             frontire.pop();
             if (expanded == goal)
             {
+                auto end = high_resolution_clock::now();
+                chrono::duration<double> duration = end - startt;
+                timee = duration.count();
                 printing_result(start, goal, nodes_frontire, nodes_exp);
                 break;
                 /// will complete later;
@@ -271,6 +278,7 @@ public:
 
     void a_star( int main_h)
     {
+        auto startt = high_resolution_clock::now();
         priority_queue<Task, vector<Task>, Cmp> frontire;
         unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
         int nodes_frontire = 0;
@@ -303,6 +311,9 @@ public:
             frontire.pop();
             if (expanded == goal)
             {
+                auto end = high_resolution_clock::now();
+                chrono::duration<double> duration = end - startt;
+                timee = duration.count();
                 printing_result(start, goal, nodes_frontire, nodes_exp);
                 break;
             }
@@ -410,7 +421,7 @@ int main()
             cout << "wrong number to choose";
         }
         
-        //cout << " the algorthim took " << timee << " seconds" << endl;
+        cout << " the algorthim took " << timee << " seconds" << endl;
         // reset paths
         parent.clear(); 
         movee.clear();
