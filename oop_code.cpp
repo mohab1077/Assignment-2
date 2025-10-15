@@ -440,13 +440,15 @@ int main()
         TilePuzzle ob(cleaned, "012345678");
         while (true)
         {
-            int select = 0;
             cout << "1- greedy search h1" << endl;
             cout << "2- greedy search h2" << endl;
             cout << "3- A* h1" << endl;
             cout << "4- A* h2" << endl;
+            if(select == 2){
             cout << "5- enter new initial state" << endl;
+            }
             cout << "enter a number to select the algorthim : ";
+            int select = 0;
             cin >> select;
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore after
 
