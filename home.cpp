@@ -143,6 +143,8 @@ void greddy_search(string start, string goal, int main_h)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
     unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
+    int nodes_frontire = 0;
+    int nodes_exp = 0;
     int h;
     if (main_h == 1)
     {
@@ -153,6 +155,7 @@ void greddy_search(string start, string goal, int main_h)
         h = h2(start, goal);
     }
     frontire.push({h, start});
+    nodes_frontire++;
     checkfrontire_exp.insert(start);
     parent[start] = "";
     movee[start] = "";
@@ -165,6 +168,7 @@ void greddy_search(string start, string goal, int main_h)
         }
 
         string expanded = frontire.top().name;
+        nodes_exp++;
         frontire.pop();
         if (expanded == goal)
         {
@@ -208,6 +212,7 @@ void greddy_search(string start, string goal, int main_h)
                 h = h2(start, goal);
             }
             frontire.push({h, newbuzz});
+            nodes_frontire++;
             checkfrontire_exp.insert(newbuzz);
         }
     }
@@ -217,6 +222,8 @@ void a_star(string start, string goal, int main_h)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
     unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
+    int nodes_frontire = 0;
+    int nodes_exp = 0;
     int h;
     if (main_h == 1)
     {
@@ -227,6 +234,7 @@ void a_star(string start, string goal, int main_h)
         h = h2(start, goal);
     }
     frontire.push({h, start, 0});
+    nodes_frontire++;
     checkfrontire_exp.insert(start);
     parent[start] = "";
     movee[start] = "";
@@ -239,6 +247,7 @@ void a_star(string start, string goal, int main_h)
         }
 
         string expanded = frontire.top().name;
+        nodes_exp++;
         int dep = frontire.top().dep;
         frontire.pop();
         if (expanded == goal)
@@ -283,12 +292,13 @@ void a_star(string start, string goal, int main_h)
                 h = h2(start, goal);
             }
             frontire.push({h + dep + 1, newbuzz, dep + 1});
+            nodes_frontire++;
             checkfrontire_exp.insert(newbuzz);
         }
     }
 }
 int main()
 {
-    greddy_search("123456078","123456780",1);
+    a_star("123456078","123456780",2);
     return 0;
 }
