@@ -301,6 +301,6 @@ void a_star(string start, string goal, int main_h)
 }
 int main()
 {
-    a_star("281437560","123456780",2);
+    greddy_search("724506831","012345678",2);
     return 0;
 }
