@@ -35,10 +35,10 @@ private:
     string goal;
 
 public:
-    TilePuzzle(string start, string goal)
+    TilePuzzle(string a, string b)
     {
-        start = start;
-        goal = goal;
+        start = a;
+        goal = b;
     }
 
     int searchzero(string s)
@@ -108,18 +108,24 @@ public:
     string move_up(string expanded, int idx)
     {
         swap(expanded[idx], expanded[idx + 3]);
+        return expanded;
     }
     string move_down(string expanded, int idx)
     {
         swap(expanded[idx], expanded[idx - 3]);
+        return expanded;
+        
     }
     string move_left(string expanded, int idx)
     {
         swap(expanded[idx], expanded[idx + 1]);
+        return expanded;
+        
     }
     string move_right(string expanded, int idx)
     {
         swap(expanded[idx], expanded[idx - 1]);
+        return expanded;
     }
 
     queue<string> expand_node(string expanded)
@@ -130,13 +136,13 @@ public:
         int col = index % 3;
 
         if (row > 0)
-            actions.push({"down"});
+            actions.push("down");
         if (row < 2)
-            actions.push({"up"});
+            actions.push("up");
         if (col > 0)
-            actions.push({"right"});
+            actions.push("right");
         if (col < 2)
-            actions.push({"left"});
+            actions.push("left");
         return actions;
     }
 
@@ -178,7 +184,7 @@ public:
         return;
     }
 
-    void greddy_search(string start, string goal, int main_h)
+    void greddy_search( int main_h)
     {
         priority_queue<Task, vector<Task>, Cmp> frontire;
         unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
@@ -262,7 +268,7 @@ public:
         }
     }
 
-    void a_star(string start, string goal, int main_h)
+    void a_star( int main_h)
     {
         priority_queue<Task, vector<Task>, Cmp> frontire;
         unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
@@ -348,6 +354,7 @@ public:
 
 int main()
 {
-
+    TilePuzzle ob("724506831","012345678");
+    ob.greddy_search(1);
     return 0;
 }
