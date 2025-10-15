@@ -8,6 +8,10 @@
 #include <regex>
 #include <chrono>
 
+#include <fstream>
+#include <iterator>
+#include <stdexcept>
+
 using namespace std;
 using namespace std::chrono;
 unordered_map<string, string> parent;
@@ -30,6 +34,15 @@ struct Cmp
         return a.name < b.name; //
     }
 };
+/// read file and return string
+string read_file_to_string(const string &path)
+{
+    ifstream in(path, ios::in | ios::binary);
+    if (!in)
+        throw runtime_error("Cannot open file: " + path);
+    return string(istreambuf_iterator<char>(in),
+                  istreambuf_iterator<char>());
+}
 
 class TilePuzzle
 {
@@ -118,13 +131,11 @@ public:
     {
         swap(expanded[idx], expanded[idx - 3]);
         return expanded;
-        
     }
     string move_left(string expanded, int idx)
     {
         swap(expanded[idx], expanded[idx + 1]);
         return expanded;
-        
     }
     string move_right(string expanded, int idx)
     {
@@ -188,7 +199,7 @@ public:
         return;
     }
 
-    void greddy_search( int main_h)
+    void greddy_search(int main_h)
     {
         auto startt = high_resolution_clock::now();
         priority_queue<Task, vector<Task>, Cmp> frontire;
@@ -276,7 +287,7 @@ public:
         }
     }
 
-    void a_star( int main_h)
+    void a_star(int main_h)
     {
         auto startt = high_resolution_clock::now();
         priority_queue<Task, vector<Task>, Cmp> frontire;
@@ -366,66 +377,111 @@ public:
 
 int main()
 {
-    
-    while(true){
-    bool error = false;
     string cleaned;
-    do
-    {
-        error = false;
-        string input;
-        cout << "input the start state : ";
-        getline(cin, input);
-        cleaned = regex_replace(input, regex("\\s+"), "");
-        if (cleaned.size() != 9 || !all_of(cleaned.begin(), cleaned.end(), ::isdigit))
-        {
-            cout << " Invalid input! You must enter exactly 9 digits." << endl;
-            error = true;
-        }
-    } while (error);
-    TilePuzzle ob(cleaned,"012345678");
+    int select = 0;
     while (true)
-    { 
-        int select = 0;
-        cout << "1- greedy search h1" << endl;
-        cout << "2- greedy search h2" << endl;
-        cout << "3- A* h1" << endl;
-        cout << "4- A* h2" << endl;
-        cout << "5- enter new initial state" << endl;
+    {
+        cout << "1- read the file" << endl;
+        cout << "2- input start manule" << endl;
         cout << "enter a number to select the algorthim : ";
         cin >> select;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');// ignore after
-
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore after
         if (select == 1)
         {
-           ob.greddy_search(1);
+            try
+            {
+                string txt = read_file_to_string("input.txt");
+                cleaned = regex_replace(txt, regex("\\s+"), "");
+
+                if (cleaned.size() != 9 || !all_of(cleaned.begin(), cleaned.end(), ::isdigit))
+                {
+                    cout << " Invalid input FILE ! You must enter exactly 9 digits." << endl;
+                    throw ;
+                }
+                else{
+                break;
+                }
+
+            }
+            catch (const std::exception &e)
+            {
+                cerr << e.what() << '\n';
+            }
         }
         else if (select == 2)
         {
-            ob.greddy_search(2);
-        }
-        else if(select == 3){
-            ob.a_star(1);
-        }
-         else if(select == 4){
-            ob.a_star(2);
-        }
-        else if (select == 5)
-        {
             break;
         }
-
         else
         {
             cout << endl;
             cout << "wrong number to choose";
         }
-        
-        cout << " the algorthim took " << timee << " seconds" << endl;
-        // reset paths
-        parent.clear(); 
-        movee.clear();
     }
-}
+    while (true)
+    {
+        if (select == 2)
+        {
+            bool error = false;
+            do
+            {
+                error = false;
+                string input;
+                cout << "input the start state : ";
+                getline(cin, input);
+                cleaned = regex_replace(input, regex("\\s+"), "");
+                if (cleaned.size() != 9 || !all_of(cleaned.begin(), cleaned.end(), ::isdigit))
+                {
+                    cout << " Invalid input! You must enter exactly 9 digits." << endl;
+                    error = true;
+                }
+            } while (error);
+        }
+        TilePuzzle ob(cleaned, "012345678");
+        while (true)
+        {
+            int select = 0;
+            cout << "1- greedy search h1" << endl;
+            cout << "2- greedy search h2" << endl;
+            cout << "3- A* h1" << endl;
+            cout << "4- A* h2" << endl;
+            cout << "5- enter new initial state" << endl;
+            cout << "enter a number to select the algorthim : ";
+            cin >> select;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore after
+
+            if (select == 1)
+            {
+                ob.greddy_search(1);
+            }
+            else if (select == 2)
+            {
+                ob.greddy_search(2);
+            }
+            else if (select == 3)
+            {
+                ob.a_star(1);
+            }
+            else if (select == 4)
+            {
+                ob.a_star(2);
+            }
+            else if (select == 5)
+            {
+                break;
+            }
+
+            else
+            {
+                cout << endl;
+                cout << "wrong number to choose";
+            }
+
+            cout << " the algorthim took " << timee << " seconds" << endl;
+            // reset paths
+            parent.clear();
+            movee.clear();
+        }
+    }
     return 0;
 }
