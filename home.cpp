@@ -49,7 +49,15 @@ int h1(string start, string goal)
     }
     return h;
 }
-
+int searchindex(string s, char find)
+{
+    for (int i = 0; i < (int)s.length(); i++)
+    {
+        if (s[i] == find)
+            return i;
+    }
+    return -1;
+}
 int h2(string start, string goal)
 {
     int h = 0;
@@ -79,15 +87,7 @@ int h2(string start, string goal)
     return h;
 }
 
-int searchindex(string s, char find)
-{
-    for (int i = 0; i < (int)s.length(); i++)
-    {
-        if (s[i] == find)
-            return i;
-    }
-    return -1;
-}
+
 int searchzero(string s)
 {
     for (int i = 0; i < (int)s.length(); i++)
@@ -289,6 +289,6 @@ void a_star(string start, string goal, int main_h)
 }
 int main()
 {
-
+    greddy_search("123456078","123456780",1);
     return 0;
 }
