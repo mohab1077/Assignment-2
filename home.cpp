@@ -103,7 +103,7 @@ string swapstr(string a, int idx, int action)
     return a;
 }
 
-void printing_result(string start,string goal){
+void printing_result(string start,string goal,int nodes_frontire,int nodes_exp){
     vector<string> path;
                 vector<string> buzz;
                 string cur = goal;
@@ -135,6 +135,8 @@ void printing_result(string start,string goal){
                 cout << endl;
 
                 cout << "Steps (Cost): " << path.size() << endl;
+                cout << "Number of Nodes Entering the Frontier : " << nodes_frontire << endl;
+                cout << "Number of Nodes Expanded from the Frontier : " << nodes_exp << endl;
                 return;
 }
 
@@ -172,7 +174,7 @@ void greddy_search(string start, string goal, int main_h)
         frontire.pop();
         if (expanded == goal)
         {
-            printing_result(start,goal);
+            printing_result(start,goal,nodes_frontire,nodes_exp);
             break;
             /// will complete later;
         }
@@ -205,11 +207,11 @@ void greddy_search(string start, string goal, int main_h)
             int h;
             if (main_h == 1)
             {
-                h = h1(start, goal);
+                h = h1(newbuzz, goal);
             }
             if (main_h == 2)
             {
-                h = h2(start, goal);
+                h = h2(newbuzz, goal);
             }
             frontire.push({h, newbuzz});
             nodes_frontire++;
@@ -252,7 +254,7 @@ void a_star(string start, string goal, int main_h)
         frontire.pop();
         if (expanded == goal)
         {
-            printing_result(start,goal);
+            printing_result(start,goal,nodes_frontire,nodes_exp);
             break;
             /// will complete later;
         }
@@ -285,11 +287,11 @@ void a_star(string start, string goal, int main_h)
             int h;
             if (main_h == 1)
             {
-                h = h1(start, goal);
+                h = h1(newbuzz, goal);
             }
             if (main_h == 2)
             {
-                h = h2(start, goal);
+                h = h2(newbuzz, goal);
             }
             frontire.push({h + dep + 1, newbuzz, dep + 1});
             nodes_frontire++;
@@ -299,6 +301,6 @@ void a_star(string start, string goal, int main_h)
 }
 int main()
 {
-    a_star("123456078","123456780",2);
+    a_star("281437560","123456780",2);
     return 0;
 }
