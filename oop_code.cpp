@@ -264,6 +264,85 @@ public:
 
     void a_star(string start, string goal, int main_h)
     {
+        priority_queue<Task, vector<Task>, Cmp> frontire;
+        unordered_set<string> checkfrontire_exp; // ignore fronitrer and explored;
+        int nodes_frontire = 0;
+        int nodes_exp = 0;
+        int h;
+        if (main_h == 1)
+        {
+            h = h1(start, goal);
+        }
+        if (main_h == 2)
+        {
+            h = h2(start, goal);
+        }
+        frontire.push({h, start, 0});
+        nodes_frontire++;
+        checkfrontire_exp.insert(start);
+        parent[start] = "";
+        movee[start] = "";
+        while (true)
+        {
+            if (frontire.empty())
+            {
+                cout << "Goal not found!\n";
+                return;
+            }
+
+            string expanded = frontire.top().name;
+            nodes_exp++;
+            int dep = frontire.top().dep;
+            frontire.pop();
+            if (expanded == goal)
+            {
+                printing_result(start, goal, nodes_frontire, nodes_exp);
+                break;
+            }
+            int index = searchzero(expanded);
+            queue<string> actions = expand_node(expanded);
+
+            while (!actions.empty())
+            {
+                string newbuzz;
+                if (actions.front() == "down")
+                {
+                    newbuzz = move_down(expanded, index);
+                }
+                else if (actions.front() == "up")
+                {
+                    newbuzz = move_up(expanded, index);
+                }
+                else if (actions.front() == "right")
+                {
+                    newbuzz = move_right(expanded, index);
+                }
+                else
+                {
+                    newbuzz = move_left(expanded, index);
+                }
+                string mv = actions.front();
+                actions.pop();
+                if (checkfrontire_exp.find(newbuzz) != checkfrontire_exp.end())
+                {
+                    continue;
+                }
+                parent[newbuzz] = expanded;
+                movee[newbuzz] = mv;
+                int h;
+                if (main_h == 1)
+                {
+                    h = h1(newbuzz, goal);
+                }
+                if (main_h == 2)
+                {
+                    h = h2(newbuzz, goal);
+                }
+                frontire.push({h + dep + 1, newbuzz, dep + 1});
+                nodes_frontire++;
+                checkfrontire_exp.insert(newbuzz);
+            }
+        }
     }
 };
 
