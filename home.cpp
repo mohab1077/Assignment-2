@@ -3,14 +3,17 @@
 #include <queue>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 
 using namespace std;
+unordered_map<string, string> parent;
+unordered_map<string, string> movee;
 // this is for priority queue
 struct Task
 {
     int priority;
     string name;
-    int dep;
+    int dep; /// this is option (only used on a*)
 };
 struct path
 {
@@ -114,6 +117,8 @@ void greddy_search(string start, string goal, int main_h)
     }
     frontire.push({h, start});
     checkfrontire_exp.insert(start);
+    parent[start] = "";
+    movee[start] = "";
     while (true)
     {
         if (frontire.empty())
@@ -154,6 +159,8 @@ void greddy_search(string start, string goal, int main_h)
             {
                 continue;
             }
+            parent[newbuzz] = expanded;
+            movee[newbuzz] = mv;
             int h;
             if (main_h == 1)
             {
@@ -184,6 +191,8 @@ void a_star(string start, string goal, int main_h)
     }
     frontire.push({h, start, 0});
     checkfrontire_exp.insert(start);
+    parent[start] = "";
+    movee[start] = "";
     while (true)
     {
         if (frontire.empty())
@@ -225,6 +234,8 @@ void a_star(string start, string goal, int main_h)
             {
                 continue;
             }
+            parent[newbuzz] = expanded;
+            movee[newbuzz] = mv;
             int h;
             if (main_h == 1)
             {
