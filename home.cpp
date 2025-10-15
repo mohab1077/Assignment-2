@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 unordered_map<string, string> parent;
@@ -102,6 +103,42 @@ string swapstr(string a, int idx, int action)
     return a;
 }
 
+void printing_result(string start,string goal){
+    vector<string> path;
+                vector<string> buzz;
+                string cur = goal;
+                while (cur != start)
+                {
+                    path.push_back(movee[cur]);
+                    buzz.push_back(cur);
+                    cur = parent[cur];
+                }
+                buzz.push_back(start);
+                reverse(path.begin(), path.end());
+                reverse(buzz.begin(), buzz.end());
+
+                cout << "States: " << endl;
+                for (auto &st : buzz)
+                {
+                    for (int i = 0; i < 9; i++)
+                    {
+                        cout << st[i] << " ";
+                        if ((i + 1) % 3 == 0)
+                            cout << endl;
+                    }
+                    cout << "------" << endl;
+                }
+
+                cout << "Path: ";
+                for (auto &m : path)
+                    cout << m << " ";
+                cout << endl;
+
+                cout << "Steps (Cost): " << path.size() << endl;
+                return;
+}
+
+
 void greddy_search(string start, string goal, int main_h)
 {
     priority_queue<Task, vector<Task>, Cmp> frontire;
@@ -131,7 +168,7 @@ void greddy_search(string start, string goal, int main_h)
         frontire.pop();
         if (expanded == goal)
         {
-            cout << "founded";
+            printing_result(start,goal);
             break;
             /// will complete later;
         }
@@ -206,7 +243,7 @@ void a_star(string start, string goal, int main_h)
         frontire.pop();
         if (expanded == goal)
         {
-            cout << "founded";
+            printing_result(start,goal);
             break;
             /// will complete later;
         }
