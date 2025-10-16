@@ -383,7 +383,7 @@ int main()
     {
         cout << "1- read the file" << endl;
         cout << "2- input start manule" << endl;
-        cout << "enter a number to select the algorthim : ";
+        cout << "enter a number to select the input initial state : ";
         cin >> select;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // ignore after
         if (select == 1)
